@@ -1,0 +1,44 @@
+name: Bootstrap Expo SDK 58
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/bootstrap-expo.yml'
+permissions:
+  contents: write
+jobs:
+  bootstrap:
+    if: github.repository == 'joseluizf/expo-pwa'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+        continue-on-error: true
+      - name: Check versions
+        run: |
+          node --version
+          npm --version
+          npx --version
+          git --version
+      - name: Generate official Expo project
+        run: |
+          if [ -f package.json ]; then echo 'Expo project already exists'; exit 0; fi
+          npx --yes create-expo-app@latest /tmp/expo-bootstrap --template default@sdk-58 --yes
+          cp -a /tmp/expo-bootstrap/. ./
+          rm -rf .gitignore.bak
+          npm install
+          npx expo install --check
+      - name: Commit generated project
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: bootstrap official Expo SDK 58 project'
+          git push
