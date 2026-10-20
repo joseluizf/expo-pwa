@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Cadastro de Usuários",
+    "slug": "expo-pwa",
+    "scheme": "expopwa",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router"
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "name": "Cadastro de Usuários",
+      "shortName": "Cadastro",
+      "themeColor": "#14213d",
+      "backgroundColor": "#ffffff",
+      "description": "Aplicativo PWA de cadastro de usuários"
+    }
+  }
+}
